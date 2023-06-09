@@ -13,6 +13,12 @@ resource "aws_glue_crawler" "this" {
 
   s3_target {
     path = "s3://${var.s3_bucket_name}/${var.s3_bucket_prefix}/${var.report_name}/${var.report_name}"
+    exclusions = ['*.json', '*.yml', '*.sql', '*.csv', '*.gz', '*.zip']
+  }
+
+  schema_change_policy {
+    delete_behavior = "DELETE_FROM_DATABASE"
+    update_behavior = "UPDATE_IN_DATABASE"
   }
 
   tags = var.tags
