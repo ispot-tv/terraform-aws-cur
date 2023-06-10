@@ -58,18 +58,21 @@ data "aws_iam_policy_document" "crawler_assume" {
 }
 
 data "aws_iam_policy_document" "crawler" {
-  statement {
-    sid = "S3Decrypt"
+  dynamic "statement" {
+    for_each = var.existing_kms_key
+    content {
+      sid = "S3Decrypt"
 
-    effect = "Allow"
+      effect = "Allow"
 
-    actions = [
-      "kms:GenerateDataKey",
-      "kms:Decrypt",
-      "kms:Encrypt",
-    ]
+      actions = [
+        "kms:GenerateDataKey",
+        "kms:Decrypt",
+        "kms:Encrypt",
+      ]
 
-    resources = [var.s3_use_existing_kms_key ? data.aws_kms_key.s3[0].arn : aws_kms_key.s3[0].arn]
+      resources = var.existing_kms_key
+    }
   }
 
   statement {

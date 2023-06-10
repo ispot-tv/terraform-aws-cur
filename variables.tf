@@ -8,10 +8,10 @@ variable "s3_bucket_name" {
   type        = string
 }
 
-variable "s3_use_existing_kms_key" {
-  description = "Whether to use an existing KMS CMK for S3 SSE."
-  type        = bool
-  default     = false
+variable "existing_kms_key" {
+  description = "One KMS key for decrypting existing bucket"
+  type        = list(string)
+  default     = []
 }
 
 variable "s3_kms_key_alias" {
