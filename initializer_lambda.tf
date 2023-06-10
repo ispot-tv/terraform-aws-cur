@@ -44,7 +44,7 @@ resource "aws_lambda_function" "run_crawler" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${path.module}/src/index.js"
+  source_file = "${path.module}/src/initializer.js"
   output_path = "${path.module}/lambda.zip"
 }
 
@@ -87,8 +87,9 @@ data "aws_iam_policy_document" "crawler_trigger" {
     effect = "Allow"
 
     actions = [
+      "logs:CreateLogGroup",
       "logs:CreateLogStream",
-      "logs:PutLogEvents",
+      "logs:PutLogEvents"
     ]
 
     resources = ["${aws_cloudwatch_log_group.lambda.arn}:*"]
