@@ -12,7 +12,7 @@ data "aws_kms_key" "s3" {
 
 # tfsec:ignore:AWS019 (disable auto-rotation for now)
 resource "aws_kms_key" "s3" {
-  count = var.s3_use_existing_kms_key ? 0 : 1
+  count = var.use_existing_s3_bucket == false && var.s3_use_existing_kms_key == false ? 1 : 0
 
   description = "For server-side encryption in the '${var.s3_bucket_name}' S3 bucket."
 
@@ -20,7 +20,7 @@ resource "aws_kms_key" "s3" {
 }
 
 resource "aws_kms_alias" "s3" {
-  count = var.s3_use_existing_kms_key ? 0 : 1
+  count = var.use_existing_s3_bucket == false && var.s3_use_existing_kms_key == false ? 1 : 0
 
   name          = "alias/${trimprefix(var.s3_kms_key_alias, "alias/")}"
   target_key_id = aws_kms_key.s3[0].key_id

@@ -11,6 +11,7 @@ variable "s3_bucket_name" {
 variable "s3_use_existing_kms_key" {
   description = "Whether to use an existing KMS CMK for S3 SSE."
   type        = bool
+  default     = false
 }
 
 variable "s3_kms_key_alias" {
